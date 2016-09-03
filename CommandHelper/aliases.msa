@@ -1,0 +1,39 @@
+/기본템설정 = >>>
+	@inv = get_inventory(pinfo(player(),20))
+	for(@i=0, @i<length(@inv), @i++){
+		if(@i == 0) {
+			if(@inv[@i]){
+				@def = array(@inv[@i])
+			} else {
+				@def = array()
+			}
+		} else {
+			if(@inv[@i]){
+				array_push(@def, @inv[@i])
+			}
+		}
+	}
+	store_value(default.inv, @def)
+	msg(colorize('&c * &e기본템 설정이 완료되었습니다.'))
+<<<
+
+*:/기본템 [$m=''] [$p=''] = >>>
+	if($m == '카운트초기화'){
+		if($p){
+			clear_value($p.default_inventory_count)
+			msg(colorize('&c * &c'.$p.'&e의 기본템 카운트 초기화가 완료되었습니다.'))
+		} else {
+			msg(colorize('&c * &e사용법: /기본템 카운트초기화 <플레이어명>'))
+		}
+	} else {	
+		if(has_value(player().default_inventory_count)){
+			msg(colorize('&c * &e 이미 기본템을 지급받았습니다!'))
+		} else {
+			@inv = get_value(default.inv)
+			for(@i=0, @i<length(@inv), @i++){
+				add_to_inventory(pinfo(player(),20), @inv[@i]['type'], @inv[@i]['qty'], @inv[@i]['meta'])	
+			}
+			store_value(player().default_inventory_count, 1)
+		}
+	}
+<<<
